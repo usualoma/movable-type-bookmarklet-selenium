@@ -1,0 +1,153 @@
+<html>
+<!--
+Copyright 2004 ThoughtWorks, Inc
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<head>
+    <meta content="text/html; charset=ISO-8859-1"
+          http-equiv="content-type">
+    <title>Select a Test Suite</title>
+    <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/selenium-browserdetect.js"></script>
+    <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/xmlextras.js"></script>
+    <script>
+        browserVersion.isHTA = true;
+
+        function load() {
+            if (browserVersion.isHTA) {
+                document.getElementById("save-div").style.display = "inline";
+            }
+            if (/thisIsSeleniumServer/.test(window.location.search)) {
+                document.getElementById("slowResources-div").style.display = "inline";
+                if (browserVersion.isHTA || browserVersion.isChrome) {
+                    document.getElementById("test").value = "http://localhost:4444/selenium-server/tests/TestSuite.html";
+                }
+            }
+            
+            var form = document.getElementById('prompt');
+            form.test.value = 'data:text/html,<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> <html> <head> <meta http-equiv="Content-Type" content="text/html; charset=windows-31j"> <title>01_EmpDisplay_TestSuite</title> </head> <body> <table border="1"> <tr><td id="test_suite">01_EmpDisplay_TestSuite</td></tr> <tr><td><a id="test_case_001" href="./01_EmpDisplay_Test_002.html">01_EmpDisplay_Test_001</a></td></tr> </table> <script type="text/javascript"> var s = window.parent.opener.selenium_test_suite; var t = document.getElementById(\'test_case_001\'); t.href = \'data:text/html,\' + s.cases[0].test; t.innerHTML = s.cases[0].title; var t = document.getElementById(\'test_suite\'); t.innerHTML = s.title; </scr' + 'ipt> <p style="display: none">';
+            form.multiWindow.checked = 'checked';
+            form.auto.checked = 'checked';
+        }
+
+        function autoCheck() {
+            var auto = document.getElementById("auto");
+            var autoDiv = document.getElementById("auto-div");
+            if (auto.checked) {
+                autoDiv.style.display = "inline";
+            } else {
+                autoDiv.style.display = "none";
+            }
+        }
+
+        function slowCheck() {
+            var slowResourcesCheckbox = document.getElementById("slowResources");
+            var slowResources = slowResourcesCheckbox.checked ? true : false;
+            var xhr = XmlHttp.create();
+            var driverUrl = "http://localhost:4444/selenium-server/driver/?cmd=slowResources&1=" + slowResources;
+            xhr.open("GET", driverUrl, true);
+            xhr.send(null);
+        }
+
+        function saveCheck() {
+            var results = document.getElementById("results");
+            var check = document.getElementById("save").checked;
+            if (check) {
+                results.firstChild.nodeValue = "Results file ";
+                document.getElementById("resultsUrl").value = "results.html";
+            } else {
+                results.firstChild.nodeValue = "Results URL ";
+                document.getElementById("resultsUrl").value = "../postResults";
+            }
+        }
+
+        function go() {
+            if (!browserVersion.isHTA && !browserVersion.isChrome) return true;
+            var inputs = document.getElementsByTagName("input");
+            var queryString = "";
+            for (var i = 0; i < inputs.length; i++) {
+                var elem = inputs[i];
+                var name = elem.name;
+                var value = elem.value;
+                if (elem.type == "checkbox") {
+                    value = elem.checked;
+                }
+                queryString += escape(name) + "=" + escape(value);
+                if (i < (inputs.length - 1)) {
+                    queryString += "&";
+                }
+            }
+
+            //alert(window.parent.htmlTestRunner);
+
+            window.parent.selenium = null;
+            window.parent.htmlTestRunner.controlPanel.queryString = queryString;
+            window.parent.htmlTestRunner.loadSuiteFrame();
+            return false;
+        }
+    </script>
+</head>
+
+<body onload="load()" style="font-size: x-small">
+<form id="prompt" target="_top" method="GET" onsubmit="return go();" action="TestRunner.html">
+
+    <p>
+        Test Suite:
+        <input id="test" name="test" size="30" value="../tests/TestSuite.html"/>
+    </p>
+
+    <p align="center"><input type="submit" value="Go"/></p>
+
+    <fieldset>
+        <legend>Options</legend>
+
+        <p>
+            <input id="multiWindow" type="checkbox" name="multiWindow" onclick="autoCheck();"/> <label
+                for="multiWindow">AUT in separate window</label>
+
+        <p>
+
+        <div id="slowResources-div" style="display: none">
+            <p>
+                <input id="slowResources" type="checkbox" name="slowResources" onclick="slowCheck();" /> <label for="slowResources">Slow down web server</label>
+            </p>
+        </div>
+
+        <p>
+            <input id="auto" type="checkbox" name="auto" onclick="autoCheck();"/> <label for="auto">Run
+            automatically</label>
+        </p>
+
+        <div id="auto-div" style="display: none">
+            <p>
+                <input id="close" type="checkbox" name="close"/> <label for="close">Close afterwards </label>
+            </p>
+
+            <div id="save-div" style="display: none">
+                <br/><label for="save">Save to file </label><input id="save" type="checkbox" name="save"
+                                                                   onclick="saveCheck();"/>
+            </div>
+
+            <p id="results">
+                Results URL:
+                <input id="resultsUrl" name="resultsUrl" value="../postResults"/>
+            </p>
+
+        </div>
+    </fieldset>
+
+
+</form>
+</body>
+</html>

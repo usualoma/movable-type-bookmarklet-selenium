@@ -1,0 +1,185 @@
+<html>
+
+<head>
+    <HTA:APPLICATION ID="SeleniumHTARunner" APPLICATIONNAME="Selenium">
+        <!-- the previous line is only relevant if you rename this
+     file to "TestRunner.hta" -->
+
+        <!-- The copyright notice and other comments have been moved to after the HTA declaration,
+to work-around a bug in IE on Win2K whereby the HTA application doesn't function correctly -->
+        <!--
+        Copyright 2004 ThoughtWorks, Inc
+
+         Licensed under the Apache License, Version 2.0 (the "License");
+         you may not use this file except in compliance with the License.
+         You may obtain a copy of the License at
+
+             http://www.apache.org/licenses/LICENSE-2.0
+
+         Unless required by applicable law or agreed to in writing, software
+         distributed under the License is distributed on an "AS IS" BASIS,
+         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+         See the License for the specific language governing permissions and
+         limitations under the License.
+        -->
+        <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"/>
+
+        <title>Selenium Functional Test Runner</title>
+        <link rel="stylesheet" type="text/css" href="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/selenium.css"/>
+        <script type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/xmlextras.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/lib/prototype.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/lib/cssQuery/cssQuery-p.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/lib/snapsie.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/htmlutils.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/ui-element.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/lib/scriptaculous/scriptaculous.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/selenium-browserdetect.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/selenium-browserbot.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/selenium-api.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/selenium-commandhandlers.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/selenium-executionloop.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/selenium-testrunner.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/selenium-logging.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/selenium-version.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/xpath/util.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/xpath/xmltoken.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/xpath/dom.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/xpath/xpath.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/xpath/javascript-xpath-0.1.11.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://selenium.googlecode.com/svn/selenium-core/tags/REL-1.0.1/src/main/resources/core/scripts/user-extensions.js"></script>
+        <script language="JavaScript" type="text/javascript">
+            function openDomViewer() {
+                var autFrame = document.getElementById('selenium_myiframe');
+                var autFrameDocument = new SeleniumFrame(autFrame).getDocument();
+                this.rootDocument = autFrameDocument;
+                var domViewer = window.open(getDocumentBase(document) + 'domviewer/domviewer.html');
+                return false;
+            }
+        </script>
+
+        <script language="JavaScript" type="text/javascript">
+          (function(html, automated) {
+            var orig = openSeparateApplicationWindow;
+            openSeparateApplicationWindow = function(html, automated) {
+              return orig('data:text/html;base64,PCEtLQ0KQ29weXJpZ2h0IDIwMDUgVGhvdWdodFdvcmtzLCBJbmMNCg0KIExpY2Vuc2VkIHVuZGVyIHRoZSBBcGFjaGUgTGljZW5zZSwgVmVyc2lvbiAyLjAgKHRoZSAiTGljZW5zZSIpOw0KIHlvdSBtYXkgbm90IHVzZSB0aGlzIGZpbGUgZXhjZXB0IGluIGNvbXBsaWFuY2Ugd2l0aCB0aGUgTGljZW5zZS4NCiBZb3UgbWF5IG9idGFpbiBhIGNvcHkgb2YgdGhlIExpY2Vuc2UgYXQNCg0KICAgICBodHRwOi8vd3d3LmFwYWNoZS5vcmcvbGljZW5zZXMvTElDRU5TRS0yLjANCg0KIFVubGVzcyByZXF1aXJlZCBieSBhcHBsaWNhYmxlIGxhdyBvciBhZ3JlZWQgdG8gaW4gd3JpdGluZywgc29mdHdhcmUNCiBkaXN0cmlidXRlZCB1bmRlciB0aGUgTGljZW5zZSBpcyBkaXN0cmlidXRlZCBvbiBhbiAiQVMgSVMiIEJBU0lTLA0KIFdJVEhPVVQgV0FSUkFOVElFUyBPUiBDT05ESVRJT05TIE9GIEFOWSBLSU5ELCBlaXRoZXIgZXhwcmVzcyBvciBpbXBsaWVkLg0KIFNlZSB0aGUgTGljZW5zZSBmb3IgdGhlIHNwZWNpZmljIGxhbmd1YWdlIGdvdmVybmluZyBwZXJtaXNzaW9ucyBhbmQNCiBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCi0tPg0KDQo8aHRtbD4NCjxsaW5rIHJlbD0ic3R5bGVzaGVldCIgdHlwZT0idGV4dC9jc3MiIGhyZWY9Imh0dHA6Ly9zZWxlbml1bS5nb29nbGVjb2RlLmNvbS9zdm4vc2VsZW5pdW0tY29yZS90YWdzL1JFTC0xLjAuMS9zcmMvbWFpbi9yZXNvdXJjZXMvY29yZS9zZWxlbml1bS5jc3MiIC8+DQo8Ym9keT4NCjx0YWJsZSB3aWR0aD0iMTAwJSI+DQoNCjx0cj4NCiAgPHRoPiZ1YXJyOzwvdGg+DQogIDx0aD4mdWFycjs8L3RoPg0KICA8dGg+JnVhcnI7PC90aD4NCjwvdHI+DQo8dHI+DQogIDx0aCB3aWR0aD0iMjUlIj5UZXN0IFN1aXRlPC90aD4NCiAgPHRoIHdpZHRoPSI1MCUiPkN1cnJlbnQgVGVzdDwvdGg+DQogIDx0aCB3aWR0aD0iMjUlIj5Db250cm9sIFBhbmVsPC90aD4NCjwvdHI+DQo8dHI+PHRkPiZuYnNwOzwvdGQ+PC90cj4NCg0KPHRyPg0KPHRkPjwvdGQ+DQo8dGQgY2xhc3M9InNlbGVuaXVtIHNwbGFzaCI+DQoNCjxpbWcgc3JjPSJzZWxlbml1bS1sb2dvLnBuZyIgYWxpZ249InJpZ2h0Ij4NCg0KPGgxPlNlbGVuaXVtPC9oMT4NCjxoMj5ieSA8YSBocmVmPSJodHRwOi8vd3d3LnRob3VnaHR3b3Jrcy5jb20iPlRob3VnaHRXb3JrczwvYT4gYW5kIGZyaWVuZHM8L2gyPg0KDQo8cD4NCkZvciBtb3JlIGluZm9ybWF0aW9uIG9uIFNlbGVuaXVtLCB2aXNpdA0KDQo8cHJlPg0KICAgIDxhIGhyZWY9Imh0dHA6Ly9zZWxlbml1bS5vcGVucWEub3JnIiB0YXJnZXQ9Il9ibGFuayI+aHR0cDovL3NlbGVuaXVtLm9wZW5xYS5vcmc8L2E+DQo8L3ByZT4NCg0KPC90ZD4NCjx0cj4NCg0KPC90YWJsZT4NCjwvYm9keT4NCjwvaHRtbD4NCg==', automated);
+            };
+          })();
+        </script>
+</head>
+
+<body onLoad="onSeleniumLoad();">
+<table class="layout">
+<form action="" name="controlPanel">
+
+<!-- Suite, Test, Control Panel -->
+
+<tr class="selenium">
+<td width="25%" height="30%">
+    <iframe name="testSuiteFrame" id="testSuiteFrame" src="data:text/html;base64,PGh0bWw+DQo8IS0tDQpDb3B5cmlnaHQgMjAwNCBUaG91Z2h0V29ya3MsIEluYw0KDQogTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7DQogeW91IG1heSBub3QgdXNlIHRoaXMgZmlsZSBleGNlcHQgaW4gY29tcGxpYW5jZSB3aXRoIHRoZSBMaWNlbnNlLg0KIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUgTGljZW5zZSBhdA0KDQogICAgIGh0dHA6Ly93d3cuYXBhY2hlLm9yZy9saWNlbnNlcy9MSUNFTlNFLTIuMA0KDQogVW5sZXNzIHJlcXVpcmVkIGJ5IGFwcGxpY2FibGUgbGF3IG9yIGFncmVlZCB0byBpbiB3cml0aW5nLCBzb2Z0d2FyZQ0KIGRpc3RyaWJ1dGVkIHVuZGVyIHRoZSBMaWNlbnNlIGlzIGRpc3RyaWJ1dGVkIG9uIGFuICJBUyBJUyIgQkFTSVMsDQogV0lUSE9VVCBXQVJSQU5USUVTIE9SIENPTkRJVElPTlMgT0YgQU5ZIEtJTkQsIGVpdGhlciBleHByZXNzIG9yIGltcGxpZWQuDQogU2VlIHRoZSBMaWNlbnNlIGZvciB0aGUgc3BlY2lmaWMgbGFuZ3VhZ2UgZ292ZXJuaW5nIHBlcm1pc3Npb25zIGFuZA0KIGxpbWl0YXRpb25zIHVuZGVyIHRoZSBMaWNlbnNlLg0KLS0+DQoNCjxoZWFkPg0KICAgIDxtZXRhIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1JU08tODg1OS0xIg0KICAgICAgICAgIGh0dHAtZXF1aXY9ImNvbnRlbnQtdHlwZSI+DQogICAgPHRpdGxlPlNlbGVjdCBhIFRlc3QgU3VpdGU8L3RpdGxlPg0KICAgIDxzY3JpcHQgbGFuZ3VhZ2U9IkphdmFTY3JpcHQiIHR5cGU9InRleHQvamF2YXNjcmlwdCIgc3JjPSJodHRwOi8vc2VsZW5pdW0uZ29vZ2xlY29kZS5jb20vc3ZuL3NlbGVuaXVtLWNvcmUvdGFncy9SRUwtMS4wLjEvc3JjL21haW4vcmVzb3VyY2VzL2NvcmUvc2NyaXB0cy9zZWxlbml1bS1icm93c2VyZGV0ZWN0LmpzIj48L3NjcmlwdD4NCiAgICA8c2NyaXB0IGxhbmd1YWdlPSJKYXZhU2NyaXB0IiB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0iaHR0cDovL3NlbGVuaXVtLmdvb2dsZWNvZGUuY29tL3N2bi9zZWxlbml1bS1jb3JlL3RhZ3MvUkVMLTEuMC4xL3NyYy9tYWluL3Jlc291cmNlcy9jb3JlL3NjcmlwdHMveG1sZXh0cmFzLmpzIj48L3NjcmlwdD4NCiAgICA8c2NyaXB0Pg0KICAgICAgICBicm93c2VyVmVyc2lvbi5pc0hUQSA9IHRydWU7DQoNCiAgICAgICAgZnVuY3Rpb24gbG9hZCgpIHsNCiAgICAgICAgICAgIGlmIChicm93c2VyVmVyc2lvbi5pc0hUQSkgew0KICAgICAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJzYXZlLWRpdiIpLnN0eWxlLmRpc3BsYXkgPSAiaW5saW5lIjsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIGlmICgvdGhpc0lzU2VsZW5pdW1TZXJ2ZXIvLnRlc3Qod2luZG93LmxvY2F0aW9uLnNlYXJjaCkpIHsNCiAgICAgICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgic2xvd1Jlc291cmNlcy1kaXYiKS5zdHlsZS5kaXNwbGF5ID0gImlubGluZSI7DQogICAgICAgICAgICAgICAgaWYgKGJyb3dzZXJWZXJzaW9uLmlzSFRBIHx8IGJyb3dzZXJWZXJzaW9uLmlzQ2hyb21lKSB7DQogICAgICAgICAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJ0ZXN0IikudmFsdWUgPSAiaHR0cDovL2xvY2FsaG9zdDo0NDQ0L3NlbGVuaXVtLXNlcnZlci90ZXN0cy9UZXN0U3VpdGUuaHRtbCI7DQogICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgDQogICAgICAgICAgICB2YXIgZm9ybSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdwcm9tcHQnKTsNCiAgICAgICAgICAgIGZvcm0udGVzdC52YWx1ZSA9ICdkYXRhOnRleHQvaHRtbCw8IURPQ1RZUEUgSFRNTCBQVUJMSUMgIi0vL1czQy8vRFREIEhUTUwgNC4wMSBUcmFuc2l0aW9uYWwvL0VOIj4gPGh0bWw+IDxoZWFkPiA8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD13aW5kb3dzLTMxaiI+IDx0aXRsZT4wMV9FbXBEaXNwbGF5X1Rlc3RTdWl0ZTwvdGl0bGU+IDwvaGVhZD4gPGJvZHk+IDx0YWJsZSBib3JkZXI9IjEiPiA8dHI+PHRkIGlkPSJ0ZXN0X3N1aXRlIj4wMV9FbXBEaXNwbGF5X1Rlc3RTdWl0ZTwvdGQ+PC90cj4gPHRyPjx0ZD48YSBpZD0idGVzdF9jYXNlXzAwMSIgaHJlZj0iLi8wMV9FbXBEaXNwbGF5X1Rlc3RfMDAyLmh0bWwiPjAxX0VtcERpc3BsYXlfVGVzdF8wMDE8L2E+PC90ZD48L3RyPiA8L3RhYmxlPiA8c2NyaXB0IHR5cGU9InRleHQvamF2YXNjcmlwdCI+IHZhciBzID0gd2luZG93LnBhcmVudC5vcGVuZXIuc2VsZW5pdW1fdGVzdF9zdWl0ZTsgdmFyIHQgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcJ3Rlc3RfY2FzZV8wMDFcJyk7IHQuaHJlZiA9IFwnZGF0YTp0ZXh0L2h0bWwsXCcgKyBzLmNhc2VzWzBdLnRlc3Q7IHQuaW5uZXJIVE1MID0gcy5jYXNlc1swXS50aXRsZTsgdmFyIHQgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcJ3Rlc3Rfc3VpdGVcJyk7IHQuaW5uZXJIVE1MID0gcy50aXRsZTsgPC9zY3InICsgJ2lwdD4gPHAgc3R5bGU9ImRpc3BsYXk6IG5vbmUiPic7DQogICAgICAgICAgICBmb3JtLm11bHRpV2luZG93LmNoZWNrZWQgPSAnY2hlY2tlZCc7DQogICAgICAgICAgICBmb3JtLmF1dG8uY2hlY2tlZCA9ICdjaGVja2VkJzsNCiAgICAgICAgfQ0KDQogICAgICAgIGZ1bmN0aW9uIGF1dG9DaGVjaygpIHsNCiAgICAgICAgICAgIHZhciBhdXRvID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImF1dG8iKTsNCiAgICAgICAgICAgIHZhciBhdXRvRGl2ID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImF1dG8tZGl2Iik7DQogICAgICAgICAgICBpZiAoYXV0by5jaGVja2VkKSB7DQogICAgICAgICAgICAgICAgYXV0b0Rpdi5zdHlsZS5kaXNwbGF5ID0gImlubGluZSI7DQogICAgICAgICAgICB9IGVsc2Ugew0KICAgICAgICAgICAgICAgIGF1dG9EaXYuc3R5bGUuZGlzcGxheSA9ICJub25lIjsNCiAgICAgICAgICAgIH0NCiAgICAgICAgfQ0KDQogICAgICAgIGZ1bmN0aW9uIHNsb3dDaGVjaygpIHsNCiAgICAgICAgICAgIHZhciBzbG93UmVzb3VyY2VzQ2hlY2tib3ggPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgic2xvd1Jlc291cmNlcyIpOw0KICAgICAgICAgICAgdmFyIHNsb3dSZXNvdXJjZXMgPSBzbG93UmVzb3VyY2VzQ2hlY2tib3guY2hlY2tlZCA/IHRydWUgOiBmYWxzZTsNCiAgICAgICAgICAgIHZhciB4aHIgPSBYbWxIdHRwLmNyZWF0ZSgpOw0KICAgICAgICAgICAgdmFyIGRyaXZlclVybCA9ICJodHRwOi8vbG9jYWxob3N0OjQ0NDQvc2VsZW5pdW0tc2VydmVyL2RyaXZlci8/Y21kPXNsb3dSZXNvdXJjZXMmMT0iICsgc2xvd1Jlc291cmNlczsNCiAgICAgICAgICAgIHhoci5vcGVuKCJHRVQiLCBkcml2ZXJVcmwsIHRydWUpOw0KICAgICAgICAgICAgeGhyLnNlbmQobnVsbCk7DQogICAgICAgIH0NCg0KICAgICAgICBmdW5jdGlvbiBzYXZlQ2hlY2soKSB7DQogICAgICAgICAgICB2YXIgcmVzdWx0cyA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJyZXN1bHRzIik7DQogICAgICAgICAgICB2YXIgY2hlY2sgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgic2F2ZSIpLmNoZWNrZWQ7DQogICAgICAgICAgICBpZiAoY2hlY2spIHsNCiAgICAgICAgICAgICAgICByZXN1bHRzLmZpcnN0Q2hpbGQubm9kZVZhbHVlID0gIlJlc3VsdHMgZmlsZSAiOw0KICAgICAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJyZXN1bHRzVXJsIikudmFsdWUgPSAicmVzdWx0cy5odG1sIjsNCiAgICAgICAgICAgIH0gZWxzZSB7DQogICAgICAgICAgICAgICAgcmVzdWx0cy5maXJzdENoaWxkLm5vZGVWYWx1ZSA9ICJSZXN1bHRzIFVSTCAiOw0KICAgICAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJyZXN1bHRzVXJsIikudmFsdWUgPSAiLi4vcG9zdFJlc3VsdHMiOw0KICAgICAgICAgICAgfQ0KICAgICAgICB9DQoNCiAgICAgICAgZnVuY3Rpb24gZ28oKSB7DQogICAgICAgICAgICBpZiAoIWJyb3dzZXJWZXJzaW9uLmlzSFRBICYmICFicm93c2VyVmVyc2lvbi5pc0Nocm9tZSkgcmV0dXJuIHRydWU7DQogICAgICAgICAgICB2YXIgaW5wdXRzID0gZG9jdW1lbnQuZ2V0RWxlbWVudHNCeVRhZ05hbWUoImlucHV0Iik7DQogICAgICAgICAgICB2YXIgcXVlcnlTdHJpbmcgPSAiIjsNCiAgICAgICAgICAgIGZvciAodmFyIGkgPSAwOyBpIDwgaW5wdXRzLmxlbmd0aDsgaSsrKSB7DQogICAgICAgICAgICAgICAgdmFyIGVsZW0gPSBpbnB1dHNbaV07DQogICAgICAgICAgICAgICAgdmFyIG5hbWUgPSBlbGVtLm5hbWU7DQogICAgICAgICAgICAgICAgdmFyIHZhbHVlID0gZWxlbS52YWx1ZTsNCiAgICAgICAgICAgICAgICBpZiAoZWxlbS50eXBlID09ICJjaGVja2JveCIpIHsNCiAgICAgICAgICAgICAgICAgICAgdmFsdWUgPSBlbGVtLmNoZWNrZWQ7DQogICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgIHF1ZXJ5U3RyaW5nICs9IGVzY2FwZShuYW1lKSArICI9IiArIGVzY2FwZSh2YWx1ZSk7DQogICAgICAgICAgICAgICAgaWYgKGkgPCAoaW5wdXRzLmxlbmd0aCAtIDEpKSB7DQogICAgICAgICAgICAgICAgICAgIHF1ZXJ5U3RyaW5nICs9ICImIjsNCiAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICB9DQoNCiAgICAgICAgICAgIC8vYWxlcnQod2luZG93LnBhcmVudC5odG1sVGVzdFJ1bm5lcik7DQoNCiAgICAgICAgICAgIHdpbmRvdy5wYXJlbnQuc2VsZW5pdW0gPSBudWxsOw0KICAgICAgICAgICAgd2luZG93LnBhcmVudC5odG1sVGVzdFJ1bm5lci5jb250cm9sUGFuZWwucXVlcnlTdHJpbmcgPSBxdWVyeVN0cmluZzsNCiAgICAgICAgICAgIHdpbmRvdy5wYXJlbnQuaHRtbFRlc3RSdW5uZXIubG9hZFN1aXRlRnJhbWUoKTsNCiAgICAgICAgICAgIHJldHVybiBmYWxzZTsNCiAgICAgICAgfQ0KICAgIDwvc2NyaXB0Pg0KPC9oZWFkPg0KDQo8Ym9keSBvbmxvYWQ9ImxvYWQoKSIgc3R5bGU9ImZvbnQtc2l6ZTogeC1zbWFsbCI+DQo8Zm9ybSBpZD0icHJvbXB0IiB0YXJnZXQ9Il90b3AiIG1ldGhvZD0iR0VUIiBvbnN1Ym1pdD0icmV0dXJuIGdvKCk7IiBhY3Rpb249IlRlc3RSdW5uZXIuaHRtbCI+DQoNCiAgICA8cD4NCiAgICAgICAgVGVzdCBTdWl0ZToNCiAgICAgICAgPGlucHV0IGlkPSJ0ZXN0IiBuYW1lPSJ0ZXN0IiBzaXplPSIzMCIgdmFsdWU9Ii4uL3Rlc3RzL1Rlc3RTdWl0ZS5odG1sIi8+DQogICAgPC9wPg0KDQogICAgPHAgYWxpZ249ImNlbnRlciI+PGlucHV0IHR5cGU9InN1Ym1pdCIgdmFsdWU9IkdvIi8+PC9wPg0KDQogICAgPGZpZWxkc2V0Pg0KICAgICAgICA8bGVnZW5kPk9wdGlvbnM8L2xlZ2VuZD4NCg0KICAgICAgICA8cD4NCiAgICAgICAgICAgIDxpbnB1dCBpZD0ibXVsdGlXaW5kb3ciIHR5cGU9ImNoZWNrYm94IiBuYW1lPSJtdWx0aVdpbmRvdyIgb25jbGljaz0iYXV0b0NoZWNrKCk7Ii8+IDxsYWJlbA0KICAgICAgICAgICAgICAgIGZvcj0ibXVsdGlXaW5kb3ciPkFVVCBpbiBzZXBhcmF0ZSB3aW5kb3c8L2xhYmVsPg0KDQogICAgICAgIDxwPg0KDQogICAgICAgIDxkaXYgaWQ9InNsb3dSZXNvdXJjZXMtZGl2IiBzdHlsZT0iZGlzcGxheTogbm9uZSI+DQogICAgICAgICAgICA8cD4NCiAgICAgICAgICAgICAgICA8aW5wdXQgaWQ9InNsb3dSZXNvdXJjZXMiIHR5cGU9ImNoZWNrYm94IiBuYW1lPSJzbG93UmVzb3VyY2VzIiBvbmNsaWNrPSJzbG93Q2hlY2soKTsiIC8+IDxsYWJlbCBmb3I9InNsb3dSZXNvdXJjZXMiPlNsb3cgZG93biB3ZWIgc2VydmVyPC9sYWJlbD4NCiAgICAgICAgICAgIDwvcD4NCiAgICAgICAgPC9kaXY+DQoNCiAgICAgICAgPHA+DQogICAgICAgICAgICA8aW5wdXQgaWQ9ImF1dG8iIHR5cGU9ImNoZWNrYm94IiBuYW1lPSJhdXRvIiBvbmNsaWNrPSJhdXRvQ2hlY2soKTsiLz4gPGxhYmVsIGZvcj0iYXV0byI+UnVuDQogICAgICAgICAgICBhdXRvbWF0aWNhbGx5PC9sYWJlbD4NCiAgICAgICAgPC9wPg0KDQogICAgICAgIDxkaXYgaWQ9ImF1dG8tZGl2IiBzdHlsZT0iZGlzcGxheTogbm9uZSI+DQogICAgICAgICAgICA8cD4NCiAgICAgICAgICAgICAgICA8aW5wdXQgaWQ9ImNsb3NlIiB0eXBlPSJjaGVja2JveCIgbmFtZT0iY2xvc2UiLz4gPGxhYmVsIGZvcj0iY2xvc2UiPkNsb3NlIGFmdGVyd2FyZHMgPC9sYWJlbD4NCiAgICAgICAgICAgIDwvcD4NCg0KICAgICAgICAgICAgPGRpdiBpZD0ic2F2ZS1kaXYiIHN0eWxlPSJkaXNwbGF5OiBub25lIj4NCiAgICAgICAgICAgICAgICA8YnIvPjxsYWJlbCBmb3I9InNhdmUiPlNhdmUgdG8gZmlsZSA8L2xhYmVsPjxpbnB1dCBpZD0ic2F2ZSIgdHlwZT0iY2hlY2tib3giIG5hbWU9InNhdmUiDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb25jbGljaz0ic2F2ZUNoZWNrKCk7Ii8+DQogICAgICAgICAgICA8L2Rpdj4NCg0KICAgICAgICAgICAgPHAgaWQ9InJlc3VsdHMiPg0KICAgICAgICAgICAgICAgIFJlc3VsdHMgVVJMOg0KICAgICAgICAgICAgICAgIDxpbnB1dCBpZD0icmVzdWx0c1VybCIgbmFtZT0icmVzdWx0c1VybCIgdmFsdWU9Ii4uL3Bvc3RSZXN1bHRzIi8+DQogICAgICAgICAgICA8L3A+DQoNCiAgICAgICAgPC9kaXY+DQogICAgPC9maWVsZHNldD4NCg0KDQo8L2Zvcm0+DQo8L2JvZHk+DQo8L2h0bWw+DQo=" application="yes"></iframe>
+</td>
+<td width="50%" height="30%">
+    <iframe name="testFrame" id="testFrame" application="yes" src="data:text/html;base64,PGh0bWw+DQogICAgPGhlYWQ+DQogICAgICAgIDxtZXRhIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1JU08tODg1OS0xIiBodHRwLWVxdWl2PSJjb250ZW50LXR5cGUiPg0KICAgIDwvaGVhZD4NCjxib2R5Pg0KPC9ib2R5Pg0KPC9odG1sPg0K"></iframe>
+</td>
+
+<td width="25%">
+    <table class="layout">
+        <tr class="selenium">
+            <th width="25%" height="1" class="header">
+                <h1><a href="http://selenium.openqa.org" title="The Selenium Project">Selenium</a> TestRunner
+                </h1>
+            </th>
+        </tr>
+        <tr>
+            <td width="25%" height="30%" id="controlPanel">
+                <fieldset>
+                    <legend>Execute Tests</legend>
+
+                    <div id="imageButtonPanel">
+                        <button type="button" id="runSuite" onClick="htmlTestRunner.startTestSuite();"
+                                title="Run All tests" accesskey="a">
+                        </button>
+                        <button type="button" id="runSeleniumTest" onClick="htmlTestRunner.runSingleTest();"
+                                title="Run the Selected test" accesskey="r">
+                        </button>
+                        <button type="button" id="pauseTest" disabled="disabled"
+                                title="Pause/Continue" accesskey="p" class="cssPauseTest">
+                        </button>
+                        <button type="button" id="stepTest" disabled="disabled"
+                                title="Step" accesskey="s">
+                        </button>
+                    </div>
+
+                    <div style="float:left">Fast</div>
+                    <div style="float:right">Slow</div>
+                    <br/>
+                    <div id="speedSlider">
+                        <div id="speedTrack">&nbsp;</div>
+                        <div id="speedHandle">&nbsp;</div>
+                    </div>
+
+                    <div class="executionOptions">
+                        <input id="highlightOption" type="checkbox" name="highlightOption" value="0"/>
+                        <label for="highlightOption">Highlight elements</label>
+                    </div>
+
+                </fieldset>
+
+                <table id="stats" align="center">
+                    <tr>
+                        <td colspan="2" align="right">Elapsed:</td>
+                        <td id="elapsedTime" colspan="2">00.00</td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Tests</th>
+                        <th colspan="2">Commands</th>
+                    </tr>
+                    <tr>
+                        <td class="count" id="testRuns">0</td>
+                        <td>run</td>
+                        <td class="count" id="commandPasses">0</td>
+                        <td>passed</td>
+                    </tr>
+                    <tr>
+                        <td class="count" id="testFailures">0</td>
+                        <td>failed</td>
+                        <td class="count" id="commandFailures">0</td>
+                        <td>failed</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td class="count" id="commandErrors">0</td>
+                        <td>incomplete</td>
+                    </tr>
+                </table>
+
+                <fieldset>
+                    <legend>Tools</legend>
+
+                    <button type="button" id="domViewer1" onClick="openDomViewer();">
+                        View DOM
+                    </button>
+                    <button type="button" onClick="LOG.show();">
+                        Show Log
+                    </button>
+
+                </fieldset>
+
+            </td>
+        </tr>
+    </table>
+</td>
+</tr>
+
+<!-- AUT -->
+
+<tr>
+    <td colspan="3" height="70%">
+        <iframe name="selenium_myiframe" id="selenium_myiframe" src="data:text/html;base64,PCEtLQ0KQ29weXJpZ2h0IDIwMDUgVGhvdWdodFdvcmtzLCBJbmMNCg0KIExpY2Vuc2VkIHVuZGVyIHRoZSBBcGFjaGUgTGljZW5zZSwgVmVyc2lvbiAyLjAgKHRoZSAiTGljZW5zZSIpOw0KIHlvdSBtYXkgbm90IHVzZSB0aGlzIGZpbGUgZXhjZXB0IGluIGNvbXBsaWFuY2Ugd2l0aCB0aGUgTGljZW5zZS4NCiBZb3UgbWF5IG9idGFpbiBhIGNvcHkgb2YgdGhlIExpY2Vuc2UgYXQNCg0KICAgICBodHRwOi8vd3d3LmFwYWNoZS5vcmcvbGljZW5zZXMvTElDRU5TRS0yLjANCg0KIFVubGVzcyByZXF1aXJlZCBieSBhcHBsaWNhYmxlIGxhdyBvciBhZ3JlZWQgdG8gaW4gd3JpdGluZywgc29mdHdhcmUNCiBkaXN0cmlidXRlZCB1bmRlciB0aGUgTGljZW5zZSBpcyBkaXN0cmlidXRlZCBvbiBhbiAiQVMgSVMiIEJBU0lTLA0KIFdJVEhPVVQgV0FSUkFOVElFUyBPUiBDT05ESVRJT05TIE9GIEFOWSBLSU5ELCBlaXRoZXIgZXhwcmVzcyBvciBpbXBsaWVkLg0KIFNlZSB0aGUgTGljZW5zZSBmb3IgdGhlIHNwZWNpZmljIGxhbmd1YWdlIGdvdmVybmluZyBwZXJtaXNzaW9ucyBhbmQNCiBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCi0tPg0KDQo8aHRtbD4NCjxsaW5rIHJlbD0ic3R5bGVzaGVldCIgdHlwZT0idGV4dC9jc3MiIGhyZWY9InNlbGVuaXVtLmNzcyIgLz4NCjxib2R5Pg0KPHRhYmxlIHdpZHRoPSIxMDAlIj4NCg0KPHRyPg0KICA8dGg+JnVhcnI7PC90aD4NCiAgPHRoPiZ1YXJyOzwvdGg+DQogIDx0aD4mdWFycjs8L3RoPg0KPC90cj4NCjx0cj4NCiAgPHRoIHdpZHRoPSIyNSUiPlRlc3QgU3VpdGU8L3RoPg0KICA8dGggd2lkdGg9IjUwJSI+Q3VycmVudCBUZXN0PC90aD4NCiAgPHRoIHdpZHRoPSIyNSUiPkNvbnRyb2wgUGFuZWw8L3RoPg0KPC90cj4NCjx0cj48dGQ+Jm5ic3A7PC90ZD48L3RyPg0KDQo8dHI+DQo8dGQ+PC90ZD4NCjx0ZCBjbGFzcz0ic2VsZW5pdW0gc3BsYXNoIj4NCg0KPGltZyBzcmM9InNlbGVuaXVtLWxvZ28ucG5nIiBhbGlnbj0icmlnaHQiPg0KDQo8aDE+U2VsZW5pdW08L2gxPg0KPGgyPmJ5IDxhIGhyZWY9Imh0dHA6Ly93d3cudGhvdWdodHdvcmtzLmNvbSI+VGhvdWdodFdvcmtzPC9hPiBhbmQgZnJpZW5kczwvaDI+DQoNCjxwPg0KRm9yIG1vcmUgaW5mb3JtYXRpb24gb24gU2VsZW5pdW0sIHZpc2l0DQoNCjxwcmU+DQogICAgPGEgaHJlZj0iaHR0cDovL3NlbGVuaXVtLm9wZW5xYS5vcmciIHRhcmdldD0iX2JsYW5rIj5odHRwOi8vc2VsZW5pdW0ub3BlbnFhLm9yZzwvYT4NCjwvcHJlPg0KDQo8L3RkPg0KPHRyPg0KDQo8L3RhYmxlPg0KPC9ib2R5Pg0KPC9odG1sPg0K"></iframe>
+    </td>
+</tr>
+
+    </form>
+    </table>
+
+</body>
+</html>
